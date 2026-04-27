@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoLearn · emerging tech</title>
+  <style>
+    /* style.css - combined with index.html for complete solution */
+    :root {
+      /* Dark theme (default) - black & navy */
+      --bg-primary: #0a0c0e;      /* deep black background */
+      --bg-secondary: #0f1a2f;     /* deep navy blue for sections/cards/navbar */
+      --bg-elevated: #1a2942;      /* slightly lighter navy for hover states */
+      --text-primary: #ffffff;      /* white for headings */
+      --text-secondary: #e6e9f0;    /* light gray for body text */
+      --text-muted: #94a3b8;        /* muted blue-gray */
+      --accent: #2d7aff;            /* bright blue for accents */
+      --accent-hover: #4d94ff;      /* lighter blue for hover */
+      --border-subtle: #1e2d44;     /* navy border */
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+      --shadow-hover: 0 15px 40px rgba(0, 40, 100, 0.5);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Light mode variables */
+    body.light-mode {
+      --bg-primary: #f0f4fa;
+      --bg-secondary: #ffffff;
+      --bg-elevated: #f8fafd;
+      --text-primary: #0b1a2f;
+      --text-secondary: #1e2b3c;
+      --text-muted: #475569;
+      --accent: #1a5cff;
+      --accent-hover: #3b74ff;
+      --border-subtle: #dde3ed;
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 15px 40px rgba(0, 40, 100, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.2s;
+      font-weight: 400;
+    }
+
+    .app-wrapper {
+      max-width: 1600px;
+      margin: 0 auto;
+      background-color: var(--bg-primary);
+    }
+
+    /* ===== HEADER ===== */
+    .neo-header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      background-color: rgba(15, 26, 47, 0.98);
+    }
+
+    body.light-mode .neo-header {
+      background-color: rgba(255, 255, 255, 0.98);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-tag {
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-wrapper::before {
+      content: "🔍";
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      opacity: 0.6;
+      color: var(--text-muted);
+    }
+
+    #searchInput {
+      width: 300px;
+      padding: 0.8rem 1rem 0.8rem 2.8rem;
+      background-color: var(--bg-elevated);
+      border: 1.5px solid transparent;
+      border-radius: 40px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    #searchInput::placeholder {
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: var(--bg-secondary);
+      box-shadow: 0 0 0 4px rgba(45, 122, 255, 0.15);
+    }
+
+    .theme-btn {
+      background: var(--bg-elevated);
+      border: none;
+      border-radius: 40px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      transition: var(--transition);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .theme-btn:hover {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.05) rotate(15deg);
+    }
+
+    /* ===== LAYOUT ===== */
+    .main-layout {
+      display: flex;
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      gap: 2rem;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      flex: 0 0 280px;
+      background-color: var(--bg-secondary);
+      border-radius: 24px;
+      padding: 1.8rem 0;
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .sidebar:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent);
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+    }
+
+    .sidebar-nav li {
+      border-left: 3px solid transparent;
+      transition: var(--transition);
+      margin: 0.2rem 0;
+    }
+
+    .sidebar-nav li:hover {
+      border-left-color: var(--accent);
+      background: linear-gradient(90deg, var(--bg-elevated) 0%, transparent 100%);
+    }
+
+    .nav-link {
+      display: block;
+      padding: 0.9rem 1.8rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 0.98rem;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+      transform: translateX(8px);
+    }
+
+    .sidebar-footer {
+      margin-top: 2rem;
+      padding: 1.5rem 1.8rem 1rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    #progressCount {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+      margin-top: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .intro-section {
+      background-color: var(--bg-secondary);
+      border-radius: 24px;
+      padding: 2.8rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .intro-section:hover {
+      border-color: var(--accent);
+    }
+
+    .intro-section h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .intro-text {
+      font-size: 1.2rem;
+      max-width: 800px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ===== TECH SECTIONS ===== */
+    .sections-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .tech-section {
+      background-color: var(--bg-secondary);
+      border-radius: 28px;
+      padding: 2.5rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      scroll-margin-top: 6rem;
+    }
+
+    .tech-section:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .tech-section h2 {
+      font-size: 2.2rem;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 3px solid transparent;
+      border-image: linear-gradient(90deg, var(--accent), transparent);
+      border-image-slice: 1;
+      display: inline-block;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    /* ===== CARDS ===== */
+    .card {
+      background-color: var(--bg-elevated);
+      border-radius: 22px;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-subtle);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      background-color: var(--bg-secondary);
+      border-color: var(--accent);
+      transform: scale(1.01);
+      box-shadow: 0 10px 30px -15px var(--accent);
+    }
+
+    .card h3 {
+      color: var(--accent);
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .card h3::before {
+      content: "▹";
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* ===== LEARN MORE SECTION ===== */
+    .learn-more {
+      background: linear-gradient(145deg, var(--bg-elevated), var(--bg-secondary));
+      border-radius: 22px;
+      padding: 1.8rem;
+      margin-top: 1.8rem;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .learn-more h4 {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .learn-more ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .learn-more li {
+      margin: 0;
+    }
+
+    .learn-more a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.5rem 1.2rem;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 40px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      display: inline-block;
+    }
+
+    .learn-more a:hover {
+      background-color: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ===== FOOTER ===== */
+    .neo-footer {
+      text-align: center;
+      padding: 2.5rem;
+      margin-top: 3rem;
+      background-color: var(--bg-secondary);
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+    @media (max-width: 1024px) {
+      .main-layout {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: static;
+        width: 100%;
+        flex: auto;
+      }
+      
+      #searchInput {
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .header-controls {
+        justify-content: space-between;
+      }
+      
+      #searchInput {
+        width: 100%;
+      }
+      
+      .intro-section h1 {
+        font-size: 2.2rem;
+      }
+      
+      .tech-section {
+        padding: 1.5rem;
+      }
+      
+      .tech-section h2 {
+        font-size: 1.8rem;
+      }
+      
+      .card {
+        padding: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-layout {
+        padding: 0 1rem;
+      }
+      
+      .learn-more ul {
+        flex-direction: column;
+      }
+      
+      .learn-more a {
+        display: block;
+        text-align: center;
+      }
+    }
+
+    /* ===== SEARCH HIGHLIGHT ===== */
+    .search-highlight {
+      background-color: var(--accent);
+      color: white !important;
+      padding: 0.1rem 0.3rem;
+      border-radius: 8px;
+    }
+
+    /* ===== PROGRESS TRACKING ===== */
+    .tech-section.visited {
+      position: relative;
+    }
+
+    .tech-section.visited::after {
+      content: "✓ VISITED";
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--accent);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- HEADER with search & theme toggle -->
+    <header class="neo-header">
+      <div class="header-inner">
+        <div class="logo-area">
+          <span class="logo">◈ NeoLearn</span>
+          <span class="logo-tag">new‑born technologies</span>
+        </div>
+        <div class="header-controls">
+          <div class="search-wrapper">
+            <input type="text" id="searchInput" placeholder="filter technologies...">
+          </div>
+          <button id="themeToggle" class="theme-btn" aria-label="Switch dark/light mode">🌓</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- SIDEBAR + MAIN CONTENT -->
+    <div class="main-layout">
+      <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+          <ul>
+            <li><a href="#ai" class="nav-link" data-tech="ai">🤖 Artificial Intelligence</a></li>
+            <li><a href="#genai" class="nav-link" data-tech="genai">✨ Generative AI</a></li>
+            <li><a href="#web3" class="nav-link" data-tech="web3">🌐 Web 3.0</a></li>
+            <li><a href="#blockchain" class="nav-link" data-tech="blockchain">⛓️ Blockchain</a></li>
+            <li><a href="#cloud" class="nav-link" data-tech="cloud">☁️ Cloud Computing</a></li>
+            <li><a href="#iot" class="nav-link" data-tech="iot">📡 Internet of Things</a></li>
+            <li><a href="#cyber" class="nav-link" data-tech="cyber">🛡️ Cybersecurity</a></li>
+            <li><a href="#arvr" class="nav-link" data-tech="arvr">🥽 AR/VR</a></li>
+            <li><a href="#datasci" class="nav-link" data-tech="datasci">📊 Data Science</a></li>
+            <li><a href="#edge" class="nav-link" data-tech="edge">⚡ Edge Computing</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-footer">
+          <p>📌 visited topics<br> <span id="progressCount">0/10</span></p>
+        </div>
+      </aside>
+
+      <main class="content" id="mainContent">
+        <!-- introductory block -->
+        <section class="intro-section" id="intro">
+          <h1>Welcome to NeoLearn</h1>
+          <p class="intro-text">Your beginner-friendly guide to <strong>new‑born & emerging technologies</strong>. 
+            Explore concise explanations, real-world applications, and trusted resources — all with a clean, 
+            toggle‑able interface. Mark your progress as you read.</p>
+        </section>
+
+        <!-- ALL TECHNOLOGY SECTIONS -->
+        <div class="sections-container" id="sectionsContainer">
+          <!-- 1. AI -->
+          <section class="tech-section" id="ai" data-tech-name="ai">
+            <h2>🤖 Artificial Intelligence</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Artificial Intelligence (AI) is a branch of computer science that focuses on creating systems capable of performing tasks that normally require human intelligence, such as learning from experience, reasoning, understanding language, and solving problems. In essence, AI aims to make machines capable of intelligent behavior.</p>
+            </div>
+            <div class="card">
+              <h3>Why Is It Needed?</h3>
+              <p>While traditional programs require predictable, rule-based scenarios, the real world is complex and dynamic. AI is needed because it can analyze massive datasets, adapt to new situations, and improve over time, making it suitable for real-world applications where rigid programming fails.</p>
+            </div>
+            <div class="card">
+              <h3>Core Concepts</h3>
+              <p>
+                <strong>Machine Learning (ML):</strong> A subset of AI where machines learn patterns from data without being explicitly programmed.<br>
+                <strong>Deep Learning (DL):</strong> A subset of ML using multi-layered neural networks to solve complex problems like image and speech recognition.<br>
+                <strong>Data &amp; Algorithms:</strong> AI systems rely on high-quality data to learn, and algorithms are the mathematical procedures that guide their learning and decision-making.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Types of AI</h3>
+              <p>
+                <strong>Narrow AI (Weak AI):</strong> Designed for a specific task (e.g., voice assistants). Most current AI is narrow.<br>
+                <strong>General AI (Strong AI):</strong> Has human-level intelligence across various tasks. This is still under research.<br>
+                <strong>Super AI:</strong> Intelligence that surpasses human capabilities. This is currently theoretical.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Real-world Applications</h3>
+              <p>AI is used across many domains: disease diagnosis in <strong>Healthcare</strong>, personalized learning in <strong>Education</strong>, fraud detection in <strong>Finance</strong>, autonomous driving in <strong>Transportation</strong>, and threat detection in <strong>Cybersecurity</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>Ethics and Responsible AI</h3>
+              <p>Modern AI development emphasizes fairness, transparency, data privacy, and human oversight. Responsible AI aims to ensure that this technology benefits society without causing harm, addressing challenges like data bias and privacy concerns.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>For a structured learning path, start with foundational concepts, move to machine learning basics, then explore deep learning and modern generative AI. Always consider the ethical implications.</p>
+              <ul>
+                <li><a href="https://ai.google" target="_blank" rel="noopener">Google AI Education</a></li>
+                <li><a href="https://www.ibm.com/artificial-intelligence" target="_blank" rel="noopener">IBM AI Learning</a></li>
+                <li><a href="https://www.coursera.org/browse/data-science/machine-learning" target="_blank" rel="noopener">Coursera ML Courses</a></li>
+                <li><a href="https://www.kaggle.com/learn" target="_blank" rel="noopener">Kaggle Learn</a></li>
+                <li><a href="https://openai.com" target="_blank" rel="noopener">OpenAI Research</a></li>
+                <li><a href="https://huggingface.co" target="_blank" rel="noopener">Hugging Face</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 2. Generative AI -->
+          <section class="tech-section" id="genai" data-tech-name="genai">
+            <h2>✨ Generative AI</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Generative Artificial Intelligence (Generative AI) is a branch of AI that focuses on creating new content rather than only analyzing existing data. Unlike traditional AI, it produces original outputs like text, images, audio, and code based on patterns learned from large datasets.</p>
+            </div>
+            <div class="card">
+              <h3>Traditional vs. Generative AI</h3>
+              <p>
+                <strong>Traditional AI:</strong> Predicts, classifies, and answers predefined questions (e.g., spam detection).<br>
+                <strong>Generative AI:</strong> Creates new content, generates original responses, and is probabilistic (e.g., text/image generation).<br>
+                It represents a shift from "AI that decides" to "AI that creates."
+              </p>
+            </div>
+            <div class="card">
+              <h3>Evolution &amp; Mechanics</h3>
+              <p>
+                <strong>Evolution:</strong> Progressed from early rule-based systems to Deep Learning breakthroughs and the current Transformer Era (2017–Present).<br>
+                <strong>How It Works:</strong> Trains on massive datasets to learn probability distributions, encoding data to predict and generate output token by token or pixel by pixel.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Core Technologies</h3>
+              <p>
+                <strong>Large Language Models (LLMs):</strong> Trained on vast text data (e.g., ChatGPT).<br>
+                <strong>Generative Image Models:</strong> Create images from text prompts (e.g., DALL·E, Stable Diffusion).<br>
+                <strong>Multimodal Models:</strong> Work across text, image, audio, and video.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Real-World Applications</h3>
+              <p>Used in <strong>Education</strong> for tutoring, <strong>Software Development</strong> for code generation, <strong>Design &amp; Media</strong> for content creation, <strong>Healthcare</strong> for medical documentation, and <strong>Research</strong> for data synthesis.</p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p>
+                <strong>Advantages:</strong> Accelerates creativity, reduces creation time, and assists non-experts.<br>
+                <strong>Challenges:</strong> Can produce incorrect outputs (hallucinations), inherits bias, has high computational costs, and raises copyright concerns.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Ethics &amp; Future</h3>
+              <p>Responsible use requires transparency, content moderation, and human oversight. The future involves more accurate models integrating into daily workflows and scientific discovery, shaped by regulation and ethical design.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with foundations and history, move to core models (LLMs, Image Gen), explore applications, and finally understand ethics and regulations.</p>
+              <ul>
+                <li><a href="https://openai.com" target="_blank" rel="noopener">OpenAI</a></li>
+                <li><a href="https://deepmind.google" target="_blank" rel="noopener">Google DeepMind</a></li>
+                <li><a href="https://huggingface.co" target="_blank" rel="noopener">Hugging Face</a></li>
+                <li><a href="https://www.ibm.com/artificial-intelligence" target="_blank" rel="noopener">IBM AI Resources</a></li>
+                <li><a href="https://learn.microsoft.com/en-us/training/paths/introduction-generative-ai/" target="_blank" rel="noopener">Microsoft Learn</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 3. Web 3.0 -->
+          <section class="tech-section" id="web3" data-tech-name="web3">
+            <h2>🌐 Web 3.0</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Web 3.0 is the third generation of the internet, designed to give users ownership, privacy, and control over their data, identity, and digital assets. It is decentralized, trust-minimized, and user-owned, shifting power from large companies back to users.</p>
+            </div>
+            <div class="card">
+              <h3>Evolution &amp; Need</h3>
+              <p>
+                <strong>Web 1.0 (Read-Only) → Web 2.0 (Read-Write) → Web 3.0 (Read-Write-Own).</strong><br>
+                Web 3.0 was needed to address Web 2.0's issues, such as corporate data control, privacy breaches, and censorship, by using decentralization and cryptography.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Core Principles</h3>
+              <p>
+                <strong>Decentralization:</strong> No single authority controls the system.<br>
+                <strong>User Ownership:</strong> Users own their data, digital identity, and assets (tokens, NFTs).<br>
+                <strong>Trustless &amp; Permissionless:</strong> Trust is established by code, not intermediaries, and anyone can participate.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Key Technologies</h3>
+              <p>
+                <strong>Blockchain:</strong> A distributed, immutable ledger (e.g., Ethereum).<br>
+                <strong>Smart Contracts:</strong> Self-executing programs that automate agreements.<br>
+                <strong>Decentralized Identity (DID) &amp; Storage (IPFS):</strong> Users control their own identity, and data is stored across a network.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Real-World Applications</h3>
+              <p>Use cases include Decentralized Finance (<strong>DeFi</strong>), Non-Fungible Tokens (<strong>NFTs</strong>) for art/media, play-to-earn <strong>Gaming</strong>, user-owned social platforms, and Decentralized Autonomous Organizations (<strong>DAOs</strong>).</p>
+            </div>
+            <div class="card">
+              <h3>Benefits &amp; Challenges</h3>
+              <p><strong>Benefits:</strong> Greater privacy, no single point of failure, and user control. <br><strong>Challenges:</strong> Scalability issues, a high learning curve, regulatory uncertainty, and an evolving user experience.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with the web's evolution and blockchain basics. Then explore smart contracts, NFTs, and DAOs. Finally, study the practical and ethical considerations.</p>
+              <ul>
+                <li><a href="https://ethereum.org" target="_blank" rel="noopener">Ethereum Foundation</a></li>
+                <li><a href="https://web3.foundation" target="_blank" rel="noopener">Web3 Foundation</a></li>
+                <li><a href="https://www.mozilla.org/en-US/decentralization/" target="_blank" rel="noopener">Mozilla</a></li>
+                <li><a href="https://www.ibm.com/blockchain" target="_blank" rel="noopener">IBM Blockchain</a></li>
+                <li><a href="https://www.freecodecamp.org/news/what-is-web3/" target="_blank" rel="noopener">freeCodeCamp</a></li>
+                <li><a href="https://ipfs.tech" target="_blank" rel="noopener">IPFS</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 4. Blockchain -->
+          <section class="tech-section" id="blockchain" data-tech-name="blockchain">
+            <h2>⛓️ Blockchain</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Blockchain is a decentralized digital ledger that securely records data (transactions) across multiple computers in a way that is transparent and tamper-resistant. Data is stored in blocks that are linked chronologically and secured with cryptography. Once added, it cannot be changed.</p>
+            </div>
+            <div class="card">
+              <h3>How It Works</h3>
+              <p>A transaction is broadcast to the network, validated by participating computers (nodes), grouped into a block, and then cryptographically linked to the previous block. This process, governed by a consensus mechanism, ensures security and transparency without needing a central authority.</p>
+            </div>
+            <div class="card">
+              <h3>Key Characteristics</h3>
+              <p>
+                <strong>Decentralization:</strong> No single point of control or failure.<br>
+                <strong>Immutability:</strong> Data, once recorded, cannot be altered or deleted.<br>
+                <strong>Transparency:</strong> All participants can view the ledger's history.<br>
+                <strong>Security:</strong> Cryptographic linking (hashing) protects the chain's integrity.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Types &amp; Consensus</h3>
+              <p>
+                <strong>Types:</strong> Public (e.g., Bitcoin), Private (enterprise use), and Consortium (group-controlled).<br>
+                <strong>Consensus:</strong> Mechanisms like Proof of Work (PoW) and Proof of Stake (PoS) ensure all nodes agree on the state of the ledger.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Smart Contracts &amp; Use Cases</h3>
+              <p><strong>Smart Contracts</strong> are self-executing programs on the blockchain that automate agreements. This enables use cases like Decentralized Finance (<strong>DeFi</strong>), supply chain tracking, secure medical records, and digital assets (<strong>NFTs</strong>).</p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Eliminates intermediaries, enhances trust, and improves security.<br><strong>Challenges:</strong> Include scalability issues, energy consumption (for PoW), regulatory uncertainty, and complexity for beginners.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with blockchain basics and cryptography. Then explore consensus mechanisms, smart contracts (Ethereum), and finally real-world applications like DeFi and NFTs.</p>
+              <ul>
+                <li><a href="https://ethereum.org" target="_blank" rel="noopener">Ethereum Foundation</a></li>
+                <li><a href="https://bitcoin.org/en/" target="_blank" rel="noopener">Bitcoin.org</a></li>
+                <li><a href="https://www.ibm.com/topics/blockchain" target="_blank" rel="noopener">IBM - Blockchain Basics</a></li>
+                <li><a href="https://www.freecodecamp.org/news/what-is-blockchain-technology-a-beginner-s-guide/" target="_blank" rel="noopener">freeCodeCamp</a></li>
+                <li><a href="https://www.coursera.org/browse/information-technology/blockchain" target="_blank" rel="noopener">Coursera</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 5. Cloud Computing -->
+          <section class="tech-section" id="cloud" data-tech-name="cloud">
+            <h2>☁️ Cloud Computing</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Cloud Computing is the on-demand delivery of computing services—such as servers, storage, and software—over the internet (“the cloud”) instead of using local computers. Simply put: you rent computing power instead of owning it.</p>
+            </div>
+            <div class="card">
+              <h3>Why It Was Needed</h3>
+              <p>Traditional IT systems had high hardware costs, limited scalability, and maintenance complexity. Cloud computing solves this by providing on-demand resources, pay-as-you-use pricing, global access, and high availability.</p>
+            </div>
+            <div class="card">
+              <h3>Service &amp; Deployment Models</h3>
+              <p>
+                <strong>Service Models:</strong> IaaS (Infrastructure), PaaS (Platform), and SaaS (Software).<br>
+                <strong>Deployment Models:</strong> Public (shared), Private (one organization), and Hybrid (combination).
+              </p>
+            </div>
+            <div class="card">
+              <h3>Key Characteristics</h3>
+              <p>Defined by NIST, key characteristics include on-demand self-service, broad network access, resource pooling, rapid scalability, and measured service (pay-per-use).</p>
+            </div>
+            <div class="card">
+              <h3>Major Providers &amp; Applications</h3>
+              <p>
+                <strong>Providers:</strong> Amazon Web Services (AWS), Microsoft Azure, and Google Cloud.<br>
+                <strong>Applications:</strong> Powers everything from online learning and streaming services (Netflix) to enterprise software and AI model training.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Cost-effective, scalable, high availability, and enables disaster recovery.<br><strong>Challenges:</strong> Internet dependency, data privacy concerns, vendor lock-in, and potential security misconfigurations.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with fundamentals (benefits, models), then learn service models (IaaS, PaaS, SaaS), get hands-on with virtual machines, and explore advanced topics like cloud security.</p>
+              <ul>
+                <li><a href="https://aws.amazon.com" target="_blank" rel="noopener">Amazon Web Services</a></li>
+                <li><a href="https://azure.microsoft.com" target="_blank" rel="noopener">Microsoft Azure</a></li>
+                <li><a href="https://cloud.google.com" target="_blank" rel="noopener">Google Cloud</a></li>
+                <li><a href="https://www.ibm.com/cloud" target="_blank" rel="noopener">IBM Cloud</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 6. IoT -->
+          <section class="tech-section" id="iot" data-tech-name="iot">
+            <h2>📡 Internet of Things</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>The Internet of Things (IoT) is a network of physical objects (“things”) embedded with sensors and software to collect and exchange data over the internet without human intervention. In simple words: IoT makes everyday objects smart and connected.</p>
+            </div>
+            <div class="card">
+              <h3>Why It Was Needed</h3>
+              <p>Traditional systems often worked in isolation and required manual monitoring. IoT was needed to enable real-time monitoring, automation, data-driven decision-making, and remote control, overcoming the limitations of older, disconnected systems.</p>
+            </div>
+            <div class="card">
+              <h3>How It Works (Architecture)</h3>
+              <p>
+                <strong>1. Devices (Things):</strong> Sensors collect data from the environment (e.g., temperature, motion).<br>
+                <strong>2. Connectivity:</strong> Data is sent to the cloud via Wi-Fi, Bluetooth, or Cellular.<br>
+                <strong>3. Data Processing:</strong> Cloud platforms store, analyze, and make decisions on the data.<br>
+                <strong>4. Application Layer:</strong> Users interact with the system via mobile apps or dashboards.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Types &amp; Applications</h3>
+              <p>
+                <strong>Types:</strong> Includes Consumer IoT (wearables, smart homes), Industrial IoT (IIoT), Healthcare IoT, and Smart Cities.<br>
+                <strong>Applications:</strong> Used in smart homes for security, healthcare for remote monitoring, agriculture for smart irrigation, and industry for predictive maintenance.
+              </p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Leads to automation, increased efficiency, cost reduction, and real-time insights.<br><strong>Challenges:</strong> Security vulnerabilities, data privacy concerns, and device interoperability are significant hurdles that must be addressed for safe deployment.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with IoT basics (architecture, sensors), move to hardware (microcontrollers) and communication protocols, then explore cloud platforms and data dashboards before studying security and real-world case studies.</p>
+              <ul>
+                <li><a href="https://www.ibm.com/topics/internet-of-things" target="_blank" rel="noopener">IBM - IoT Basics</a></li>
+                <li><a href="https://www.freecodecamp.org/news/what-is-the-internet-of-things/" target="_blank" rel="noopener">freeCodeCamp</a></li>
+                <li><a href="https://www.arduino.cc/" target="_blank" rel="noopener">Arduino</a></li>
+                <li><a href="https://aws.amazon.com/iot/" target="_blank" rel="noopener">AWS IoT Services</a></li>
+                <li><a href="https://azure.microsoft.com/en-us/solutions/iot/" target="_blank" rel="noopener">Microsoft Azure IoT</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 7. Cybersecurity -->
+          <section class="tech-section" id="cyber" data-tech-name="cyber">
+            <h2>🛡️ Cybersecurity</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Cybersecurity is the practice of protecting computer systems, networks, data, and digital assets from unauthorized access, attacks, damage, or disruption. It aims to keep information safe in the digital world, from personal data to critical infrastructure.</p>
+            </div>
+            <div class="card">
+              <h3>Why It Is Important</h3>
+              <p>With the growth of cloud computing, IoT, and online services, digital threats have increased rapidly. Cybersecurity is essential for ensuring privacy, building trust, maintaining business continuity, and protecting national security.</p>
+            </div>
+            <div class="card">
+              <h3>Common Threats &amp; Principles</h3>
+              <p>
+                <strong>Threats:</strong> Include malware (viruses, ransomware), phishing, Denial-of-Service (DoS) attacks, and insider threats.<br>
+                <strong>Core Principles (CIA Triad):</strong> Confidentiality (only authorized access), Integrity (data cannot be altered), and Availability (systems are accessible when needed).
+              </p>
+            </div>
+            <div class="card">
+              <h3>Types of Cybersecurity</h3>
+              <p>Key areas include <strong>Network Security</strong> (protecting networks), <strong>Application Security</strong> (securing software), <strong>Cloud Security</strong> (protecting cloud infrastructure), <strong>Information Security</strong> (protecting data), and <strong>IoT Security</strong> (protecting connected devices).</p>
+            </div>
+            <div class="card">
+              <h3>How It Works (Defense in Depth)</h3>
+              <p>Cybersecurity uses a layered approach, including user authentication, network protection (firewalls), endpoint security (antivirus), data encryption, and continuous monitoring. Key tools include Intrusion Detection Systems (IDS) and Security Information and Event Management (SIEM) systems.</p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Protects sensitive data, prevents financial loss, and builds user trust.<br><strong>Challenges:</strong> Include rapidly evolving threats, a shortage of skilled professionals, and the high cost of implementation. Cybersecurity is a continuous process, not a one-time setup.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with fundamentals (threats, CIA triad), then learn network/system security, explore ethical hacking concepts, and finally study advanced topics like cloud security and cyber laws.</p>
+              <ul>
+                <li><a href="https://www.nist.gov/cybersecurity" target="_blank" rel="noopener">NIST Cybersecurity Framework</a></li>
+                <li><a href="https://owasp.org/" target="_blank" rel="noopener">OWASP</a></li>
+                <li><a href="https://www.cisco.com/c/en/us/products/security/what-is-cybersecurity.html" target="_blank" rel="noopener">Cisco Security Learning</a></li>
+                <li><a href="https://www.ibm.com/topics/cybersecurity" target="_blank" rel="noopener">IBM Cybersecurity Resources</a></li>
+                <li><a href="https://learn.microsoft.com/en-us/training/browse/?terms=security" target="_blank" rel="noopener">Microsoft Learn - Security</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 8. AR/VR -->
+          <section class="tech-section" id="arvr" data-tech-name="arvr">
+            <h2>🥽 AR / VR — Augmented Reality & Virtual Reality</h2>
+            <div class="card">
+              <h3>What are AR and VR?</h3>
+              <p><strong>Augmented Reality (AR)</strong> overlays digital elements (images, text) onto the real world via devices like smartphones. You see the real world, but with digital enhancements.<br><strong>Virtual Reality (VR)</strong> creates a fully immersive, computer-generated environment, separating the user from the real world. You enter a completely virtual space.</p>
+            </div>
+            <div class="card">
+              <h3>AR vs. VR (Quick Comparison)</h3>
+              <p>
+                <strong>Environment:</strong> AR combines real + digital; VR is fully virtual.<br>
+                <strong>Immersion:</strong> AR offers partial immersion; VR offers full immersion.<br>
+                <strong>Use Case:</strong> AR enhances reality; VR simulates a new reality.
+              </p>
+            </div>
+            <div class="card">
+              <h3>How It Works & Core Technologies</h3>
+              <p>AR/VR works by tracking user movement with sensors, processing spatial data, and rendering 3D content in real time. Core technologies include <strong>3D graphics rendering</strong>, <strong>computer vision</strong>, <strong>motion tracking</strong>, and <strong>spatial audio</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>Platforms & Development</h3>
+              <p>Mobile AR is built with Google's <strong>ARCore</strong> and Apple's <strong>ARKit</strong>. VR experiences are powered by platforms like <strong>Meta Quest</strong>. Both AR and VR content are often developed using game engines like <strong>Unity</strong> and <strong>Unreal Engine</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>Real-World Applications</h3>
+              <p>AR/VR is used for virtual labs in <strong>Education</strong>, immersive gameplay in <strong>Gaming</strong>, surgical training in <strong>Healthcare</strong>, 3D building visualization in <strong>Architecture</strong>, and virtual try-ons in <strong>Retail</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>Advantages & Challenges</h3>
+              <p><strong>Advantages:</strong> Enables immersive learning, better visualization, and safe simulations.<br><strong>Challenges:</strong> High hardware cost, potential for motion sickness, and complex content development.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan & Resources</h4>
+              <p>Start with AR/VR basics and hardware. Then learn 3D modeling and a game engine like Unity. Finally, build simple apps and explore advanced topics like spatial computing.</p>
+              <ul>
+    
+                <li><a href="https://developer.apple.com/augmented-reality/" target="_blank" rel="noopener">Apple ARKit</a></li>
+                <li><a href="https://www.meta.com/quest/" target="_blank" rel="noopener">Meta Quest (VR)</a></li>
+                <li><a href="https://unity.com/solutions/ar-vr" target="_blank" rel="noopener">Unity AR/VR</a></li>
+                <li><a href="https://www.unrealengine.com/en-US/vr-ar" target="_blank" rel="noopener">Unreal Engine</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 9. Data Science -->
+          <section class="tech-section" id="datasci" data-tech-name="datasci">
+            <h2>📊 Data Science</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Data Science is an interdisciplinary field that focuses on extracting meaningful insights, patterns, and knowledge from data using statistics, programming, and domain expertise. In simple terms, it turns raw data into useful decisions.</p>
+            </div>
+            <div class="card">
+              <h3>Why It Is Important</h3>
+              <p>In today’s digital world, vast amounts of data are generated constantly. Data Science helps organizations make informed decisions, predict future trends, optimize processes, and reduce risks by analyzing this data.</p>
+            </div>
+            <div class="card">
+              <h3>The Data Science Lifecycle</h3>
+              <p>The process involves <strong>Data Collection</strong>, <strong>Data Cleaning</strong> (handling errors), <strong>Exploratory Data Analysis</strong> (finding patterns), <strong>Model Building</strong> (using machine learning), and <strong>Deployment</strong> for decision-making.</p>
+            </div>
+            <div class="card">
+              <h3>Core Components &amp; Tools</h3>
+              <p><strong>Components:</strong> Statistics, Programming, Machine Learning, and Visualization.<br><strong>Tools:</strong> Python and R are the primary languages, with essential libraries like Pandas, NumPy, and Scikit-learn.</p>
+            </div>
+            <div class="card">
+              <h3>Real-World Applications</h3>
+              <p>Data Science is applied in <strong>Healthcare</strong> for disease prediction, <strong>Finance</strong> for fraud detection, <strong>Marketing</strong> for customer analysis, and <strong>Retail</strong> for building recommendation systems.</p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Leads to better decision-making, accurate predictions, and cost optimization.<br><strong>Challenges:</strong> Include poor data quality, privacy issues, and the potential for bias in data and models.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with statistical foundations, learn programming with Python (Pandas/NumPy), move to machine learning concepts, and finally practice with real-world projects and data visualization.</p>
+              <ul>
+                <li><a href="https://www.ibm.com/topics/data-science" target="_blank" rel="noopener">IBM Data Science</a></li>
+                <li><a href="https://www.kaggle.com/" target="_blank" rel="noopener">Kaggle</a></li>
+                <li><a href="https://www.coursera.org/browse/data-science" target="_blank" rel="noopener">Coursera</a></li>
+                <li><a href="https://www.edx.org/learn/data-science" target="_blank" rel="noopener">edX</a></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- 10. Edge Computing -->
+          <section class="tech-section" id="edge" data-tech-name="edge">
+            <h2>⚡ Edge Computing</h2>
+            <div class="card">
+              <h3>What Is It?</h3>
+              <p>Edge Computing is a distributed computing paradigm where data is processed closer to the source (edge)—such as sensors or devices—instead of sending all data to a centralized cloud. In simple words: it brings computation nearer to where data is generated.</p>
+            </div>
+            <div class="card">
+              <h3>Why It Is Needed</h3>
+              <p>Traditional cloud computing faces challenges like high latency and bandwidth limitations. Edge computing solves these by enabling real-time processing, reduced latency, lower bandwidth usage, and improved data privacy for applications needing instant responses.</p>
+            </div>
+            <div class="card">
+              <h3>How It Works &amp; Architecture</h3>
+              <p>Data is generated by devices, processed immediately on local edge gateways, and only essential data is sent to the cloud for long-term analysis. This hybrid approach balances the speed of the edge with the scalability of the cloud.</p>
+            </div>
+            <div class="card">
+              <h3>Applications &amp; Edge AI</h3>
+              <p>Edge is critical for autonomous vehicles, real-time patient monitoring, and smart city surveillance. <strong>Edge AI</strong> runs machine learning models directly on devices (e.g., cameras, robots) for offline intelligence and instant predictions.</p>
+            </div>
+            <div class="card">
+              <h3>Advantages &amp; Challenges</h3>
+              <p><strong>Advantages:</strong> Low latency, faster response times, reduced cloud costs, and offline operation capability.<br><strong>Challenges:</strong> Include device management complexity, security risks at the edge, and limited local resources.</p>
+            </div>
+            <div class="learn-more">
+              <h4>Learning Plan &amp; Resources</h4>
+              <p>Start with cloud vs. edge concepts, learn about edge architecture and tools, then explore applications like Edge AI and security considerations.</p>
+              <ul>
+                <li><a href="https://www.ibm.com/topics/edge-computing" target="_blank" rel="noopener">IBM Edge Resources</a></li>
+                <li><a href="https://aws.amazon.com/edge/" target="_blank" rel="noopener">AWS Edge Services</a></li>
+                <li><a href="https://azure.microsoft.com/en-us/solutions/edge-computing/" target="_blank" rel="noopener">Azure Edge Solutions</a></li>
+                <li><a href="https://cloud.google.com/distributed-cloud/edge" target="_blank" rel="noopener">Google Cloud Edge</a></li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <footer class="neo-footer">
+      <p>NeoLearn —team members-<strong>Vasantha reena</strong>,Yisha,Vijay,Bhairav</p>
+      <p>╰(*°▽°*)╯</p>
+    </footer>
+  </div>
+
+  <script>
+    // script.js - combined with HTML for complete solution
+    
+    // DOM Elements
+    const themeToggle = document.getElementById('themeToggle');
+    const searchInput = document.getElementById('searchInput');
+    const techSections = document.querySelectorAll('.tech-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const progressSpan = document.getElementById('progressCount');
+    const currentYearSpan = document.getElementById('currentYear');
+
+    // ===== THEME TOGGLE =====
+    function initTheme() {
+      const savedTheme = localStorage.getItem('neolearn-theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('neolearn-theme', isLight ? 'light' : 'dark');
+    }
+
+    // ===== PROGRESS TRACKING =====
+    function initProgress() {
+      const visited = JSON.parse(localStorage.getItem('neolearn-visited') || '[]');
+      
+      // Clear all visited classes first
+      techSections.forEach(section => {
+        section.classList.remove('visited');
+      });
+      
+      // Apply visited class to stored sections
+      visited.forEach(id => {
+        const section = document.getElementById(id);
+        if (section) {
+          section.classList.add('visited');
+        }
+      });
+      
+      updateProgressCounter();
+    }
+
+    function markSectionVisited(sectionId) {
+      const visited = JSON.parse(localStorage.getItem('neolearn-visited') || '[]');
+      if (!visited.includes(sectionId)) {
+        visited.push(sectionId);
+        localStorage.setItem('neolearn-visited', JSON.stringify(visited));
+        
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.classList.add('visited');
+        }
+        
+        updateProgressCounter();
+      }
+    }
+
+    function updateProgressCounter() {
+      const visited = JSON.parse(localStorage.getItem('neolearn-visited') || '[]');
+      const total = techSections.length;
+      progressSpan.textContent = `${visited.length}/${total}`;
+    }
+
+    // ===== INTERSECTION OBSERVER for progress tracking =====
+    function setupIntersectionObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+            markSectionVisited(section.id);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      techSections.forEach(section => {
+        observer.observe(section);
+      });
+    }
+
+    // ===== SEARCH FUNCTIONALITY =====
+    function filterTechnologies(searchTerm) {
+      const term = searchTerm.toLowerCase().trim();
+      
+      techSections.forEach(section => {
+        const title = section.querySelector('h2')?.textContent.toLowerCase() || '';
+        const cards = Array.from(section.querySelectorAll('.card p')).map(p => p.textContent.toLowerCase());
+        const allText = [title, ...cards].join(' ');
+        
+        if (term === '' || allText.includes(term)) {
+          section.style.display = '';
+        } else {
+          section.style.display = 'none';
+        }
+      });
+    }
+
+    // ===== SMOOTH SCROLL for nav links =====
+    function setupSmoothScroll() {
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Mark as visited when clicked from nav
+            markSectionVisited(targetId);
+          }
+        });
+      });
+    }
+
+    // ===== SET CURRENT YEAR IN FOOTER =====
+    function setCurrentYear() {
+      if (currentYearSpan) {
+        currentYearSpan.textContent = new Date().getFullYear();
+      }
+    }
+
+    // ===== INITIALIZATION =====
+    function init() {
+      initTheme();
+      initProgress();
+      setupIntersectionObserver();
+      setupSmoothScroll();
+      setCurrentYear();
+      
+      // Theme toggle listener
+      themeToggle.addEventListener('click', toggleTheme);
+      
+      // Search listener with debounce
+      let searchTimeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          filterTechnologies(searchInput.value);
+        }, 300);
+      });
+    }
+
+    // Start everything when DOM is ready
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
